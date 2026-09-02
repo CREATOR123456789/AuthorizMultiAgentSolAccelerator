@@ -43,14 +43,21 @@ You receive:
   coverage policies issued by MACs.
 - `mcp__cms-coverage__get_coverage_document(document_id, document_type)` —
   Get the full text of a coverage policy document by its ID (NCD or LCD).
-- `mcp__cms-coverage__get_contractors(state, contractor_type, limit)` —
-  Get Medicare Administrative Contractors (MACs) for a given state. Useful
-  to identify which MAC's LCDs apply to the patient's region.
-- `mcp__cms-coverage__get_whats_new_report(days_back, document_type, limit)` —
-  Get recently updated coverage determinations. Useful to check if policies
-  have been recently revised.
-- `mcp__cms-coverage__batch_get_ncds(ncd_ids)` — Get multiple NCDs at once.
-  More efficient than individual `get_coverage_document` calls.
+- `mcp__cms-coverage__get_contractors(contractor_id)` —
+  List Medicare Administrative Contractors (MACs). Pass an integer
+  `contractor_id` (e.g. `236`, `148`) to fetch a specific MAC, or omit the
+  argument to retrieve every MAC. To find the MAC(s) for a patient's state,
+  call with no arguments and filter the response client-side by the
+  contractor's listed jurisdiction.
+- `mcp__cms-coverage__get_whats_new_report(scope, document_type, timeframe, limit)` —
+  Get recently updated coverage determinations. `scope` is REQUIRED — use
+  `"national"` for NCDs/NCAs/CAL/MEDCAC/TA/MCD (combine with optional
+  `timeframe` integer 1-120 for days back, default 30) or `"local"` for
+  LCDs (combine with optional `contractor_id`, `start_date`, `end_date`
+  in YYYYMMDD form). Useful to check if policies have been recently revised.
+- `mcp__cms-coverage__batch_get_ncds(document_ids)` — Get multiple NCDs at once.
+  `document_ids` is an array of integer NCD document IDs. More efficient than
+  individual `get_coverage_document` calls.
 - `mcp__cms-coverage__sad_exclusion_list(keyword, hcpcs_code, date_option, limit)` —
   Search the Self-Administered Drug (SAD) Exclusion List. Identifies drugs
   that CANNOT be billed under Medicare Part B because they are
@@ -98,9 +105,10 @@ with normal NPPES lookup.
 
 #### Step 2: Identify Applicable MACs
 
-If the patient's state is known, call
-`mcp__cms-coverage__get_contractors(state=..., limit=5)` to identify
-which Medicare Administrative Contractors' LCDs apply.
+If the patient's state is known, call `mcp__cms-coverage__get_contractors()`
+(no arguments) to retrieve every MAC, then filter the response client-side
+for contractors whose jurisdiction includes the patient's state. The
+gateway tool does not accept a state filter directly.
 
 #### Step 3: Search Coverage Policies
 
@@ -111,14 +119,14 @@ the procedure LCD). **Limit to 3 search passes maximum** — do not keep
 searching indefinitely.
 
 **Search pass 1 — CPT/HCPCS code as keyword:**
-1. Call `mcp__cms-coverage__search_local_coverage(keyword="<CPT code>", document_type="LCD", limit=10)`
+1. Call `mcp__cms-coverage__search_local_coverage(keyword="<CPT code>", document_type="lcd", limit=10)`
    using the actual CPT/HCPCS code number (e.g., "31628").
-2. Call `mcp__cms-coverage__search_national_coverage(keyword="<CPT code>", document_type="NCD", limit=10)`.
+2. Call `mcp__cms-coverage__search_national_coverage(keyword="<CPT code>", document_type="ncd", limit=10)`.
 
 **Search pass 2 — Procedure name (if pass 1 returns no relevant results):**
-3. Call `mcp__cms-coverage__search_local_coverage(keyword="<procedure name>", document_type="LCD", limit=10)`
+3. Call `mcp__cms-coverage__search_local_coverage(keyword="<procedure name>", document_type="lcd", limit=10)`
    using the procedure's clinical name (e.g., "transbronchial lung biopsy").
-4. Call `mcp__cms-coverage__search_national_coverage(keyword="<procedure name>", document_type="NCD", limit=10)`.
+4. Call `mcp__cms-coverage__search_national_coverage(keyword="<procedure name>", document_type="ncd", limit=10)`.
 
 **Search pass 3 — Broader category (if passes 1-2 return no relevant results):**
 5. Try a broader category keyword (e.g., "diagnostic bronchoscopy" instead of
@@ -149,8 +157,9 @@ returned policy for relevance to the ACTUAL procedure and diagnosis:
 - Mark irrelevant policies with `"relevant": false` in the output.
 - Only retrieve full policy details (Step 4) for relevant policies.
 
-6. Optionally call `mcp__cms-coverage__get_whats_new_report(days_back=30)`
-   to check if any found policies were recently updated.
+6. Optionally call `mcp__cms-coverage__get_whats_new_report(scope="national", timeframe=30)`
+   to check if any found policies were recently updated (use `scope="local"`
+   with `contractor_id` to scope to a specific MAC region).
 
 **Coverage Policy Limitation Notice:**
 After finding policies, note: "Coverage policies are sourced from Medicare
@@ -160,9 +169,9 @@ payer-specific policies may differ."
 #### Step 4: Get Policy Details
 
 For each relevant NCD/LCD found:
-- Call `mcp__cms-coverage__get_coverage_document(document_id=..., document_type="LCD")` for LCDs
-  or `mcp__cms-coverage__get_coverage_document(document_id=..., document_type="NCD")` for NCDs
-- Use `mcp__cms-coverage__batch_get_ncds(ncd_ids=[...])` if multiple NCDs apply
+- Call `mcp__cms-coverage__get_coverage_document(document_id=..., document_type="lcd")` for LCDs
+  or `mcp__cms-coverage__get_coverage_document(document_id=..., document_type="ncd")` for NCDs
+- Use `mcp__cms-coverage__batch_get_ncds(document_ids=[...])` if multiple NCDs apply
 - Extract coverage criteria, covered indications, documentation requirements,
   and exclusions
 

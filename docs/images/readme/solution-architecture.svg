@@ -159,7 +159,7 @@
   <!-- Bottom MCP layer -->
   <g>
     <rect x="192" y="680" width="1120" height="178" rx="8" fill="#EEF7EF" stroke="#9FD0A5" stroke-width="1.5"/>
-    <text x="208" y="701" font-size="14" font-weight="700" fill="#2F855A">Anthropic &amp; DeepSense MCP Servers</text>
+    <text x="208" y="701" font-size="14" font-weight="700" fill="#2F855A">Anthropic Healthcare MCP Servers</text>
     <text x="208" y="720" font-size="12" fill="#5F8D66">Tool Integration Layer</text>
 
     <g filter="url(#shadow)">
@@ -167,7 +167,7 @@
       <text x="311" y="774" text-anchor="middle" font-size="14" font-weight="700" fill="#323130">NPI Registry</text>
       <text x="311" y="792" text-anchor="middle" font-size="12" fill="#767676">Provider Verification</text>
       <rect x="274" y="810" width="74" height="14" rx="7" fill="#E8F4EA"/>
-      <text x="311" y="820" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2F855A">DeepSense</text>
+      <text x="311" y="820" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2F855A">Anthropic</text>
     </g>
 
     <g filter="url(#shadow)">
@@ -175,7 +175,7 @@
       <text x="521" y="774" text-anchor="middle" font-size="14" font-weight="700" fill="#323130">ICD-10 Codes</text>
       <text x="521" y="792" text-anchor="middle" font-size="12" fill="#767676">Diagnosis Validation</text>
       <rect x="484" y="810" width="74" height="14" rx="7" fill="#E8F4EA"/>
-      <text x="521" y="820" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2F855A">DeepSense</text>
+      <text x="521" y="820" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2F855A">Anthropic</text>
     </g>
 
     <g filter="url(#shadow)">
@@ -183,7 +183,7 @@
       <text x="731" y="774" text-anchor="middle" font-size="14" font-weight="700" fill="#323130">CMS Coverage</text>
       <text x="731" y="792" text-anchor="middle" font-size="12" fill="#767676">NCD &amp; LCD Lookup</text>
       <rect x="694" y="810" width="74" height="14" rx="7" fill="#E8F4EA"/>
-      <text x="731" y="820" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2F855A">DeepSense</text>
+      <text x="731" y="820" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2F855A">Anthropic</text>
     </g>
 
     <g filter="url(#shadow)">
@@ -191,7 +191,7 @@
       <text x="941" y="774" text-anchor="middle" font-size="14" font-weight="700" fill="#323130">Clinical Trials</text>
       <text x="941" y="792" text-anchor="middle" font-size="12" fill="#767676">Latest Evidence DB</text>
       <rect x="904" y="810" width="74" height="14" rx="7" fill="#E8F4EA"/>
-      <text x="941" y="820" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2F855A">DeepSense</text>
+      <text x="941" y="820" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2F855A">Anthropic</text>
     </g>
 
     <g filter="url(#shadow)">

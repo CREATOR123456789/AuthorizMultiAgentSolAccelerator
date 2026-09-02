@@ -17,6 +17,9 @@ services:
       - HOSTED_AGENT_SYNTHESIS_URL=http://agent-synthesis:8088
       # App settings
       - FRONTEND_ORIGIN=http://localhost:3000
+      # OTel sensitive-data capture (PHI risk — local dev only).
+      # Uncomment in your shell or backend/.env, never commit as `true`.
+      # - ENABLE_OTEL_SENSITIVE_DATA=${ENABLE_OTEL_SENSITIVE_DATA:-false}
     env_file:
       - ./backend/.env
     depends_on:
@@ -46,13 +49,15 @@ services:
       - "8001:8088"
     environment:
       - AZURE_AI_PROJECT_ENDPOINT=${AZURE_AI_PROJECT_ENDPOINT}
-      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME:-gpt-4o}
-      - MCP_ICD10_CODES=${MCP_ICD10_CODES:-https://mcp.deepsense.ai/icd10_codes/mcp}
+      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME:-gpt-5.4}
+      - MCP_ICD10_CODES=${MCP_ICD10_CODES:-https://hcls.mcp.claude.com/icd10_codes/mcp}
       - MCP_PUBMED=${MCP_PUBMED:-https://pubmed.mcp.claude.com/mcp}
-      - MCP_CLINICAL_TRIALS=${MCP_CLINICAL_TRIALS:-https://mcp.deepsense.ai/clinical_trials/mcp}
+      - MCP_CLINICAL_TRIALS=${MCP_CLINICAL_TRIALS:-https://hcls.mcp.claude.com/clinical_trials/mcp}
       - APPLICATION_INSIGHTS_CONNECTION_STRING=${APPLICATION_INSIGHTS_CONNECTION_STRING:-}
+      # OTel sensitive-data capture (PHI risk — local dev only). Default: false.
+      - ENABLE_OTEL_SENSITIVE_DATA=${ENABLE_OTEL_SENSITIVE_DATA:-false}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8088/liveness"]
+      test: ["CMD", "curl", "-f", "http://localhost:8088/readiness"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -69,12 +74,14 @@ services:
       - "8002:8088"
     environment:
       - AZURE_AI_PROJECT_ENDPOINT=${AZURE_AI_PROJECT_ENDPOINT}
-      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME:-gpt-4o}
-      - MCP_NPI_REGISTRY=${MCP_NPI_REGISTRY:-https://mcp.deepsense.ai/npi_registry/mcp}
-      - MCP_CMS_COVERAGE=${MCP_CMS_COVERAGE:-https://mcp.deepsense.ai/cms_coverage/mcp}
+      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME:-gpt-5.4}
+      - MCP_NPI_REGISTRY=${MCP_NPI_REGISTRY:-https://hcls.mcp.claude.com/npi_registry/mcp}
+      - MCP_CMS_COVERAGE=${MCP_CMS_COVERAGE:-https://hcls.mcp.claude.com/cms_coverage/mcp}
       - APPLICATION_INSIGHTS_CONNECTION_STRING=${APPLICATION_INSIGHTS_CONNECTION_STRING:-}
+      # OTel sensitive-data capture (PHI risk — local dev only). Default: false.
+      - ENABLE_OTEL_SENSITIVE_DATA=${ENABLE_OTEL_SENSITIVE_DATA:-false}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8088/liveness"]
+      test: ["CMD", "curl", "-f", "http://localhost:8088/readiness"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -91,10 +98,12 @@ services:
       - "8003:8088"
     environment:
       - AZURE_AI_PROJECT_ENDPOINT=${AZURE_AI_PROJECT_ENDPOINT}
-      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME:-gpt-4o-mini}
+      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME:-gpt-5.4}
       - APPLICATION_INSIGHTS_CONNECTION_STRING=${APPLICATION_INSIGHTS_CONNECTION_STRING:-}
+      # OTel sensitive-data capture (PHI risk — local dev only). Default: false.
+      - ENABLE_OTEL_SENSITIVE_DATA=${ENABLE_OTEL_SENSITIVE_DATA:-false}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8088/liveness"]
+      test: ["CMD", "curl", "-f", "http://localhost:8088/readiness"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -111,10 +120,12 @@ services:
       - "8004:8088"
     environment:
       - AZURE_AI_PROJECT_ENDPOINT=${AZURE_AI_PROJECT_ENDPOINT}
-      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME:-gpt-4o}
+      - AZURE_OPENAI_DEPLOYMENT_NAME=${AZURE_OPENAI_DEPLOYMENT_NAME:-gpt-5.4}
       - APPLICATION_INSIGHTS_CONNECTION_STRING=${APPLICATION_INSIGHTS_CONNECTION_STRING:-}
+      # OTel sensitive-data capture (PHI risk — local dev only). Default: false.
+      - ENABLE_OTEL_SENSITIVE_DATA=${ENABLE_OTEL_SENSITIVE_DATA:-false}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8088/liveness"]
+      test: ["CMD", "curl", "-f", "http://localhost:8088/readiness"]
       interval: 30s
       timeout: 5s
       retries: 3
